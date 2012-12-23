@@ -12,6 +12,10 @@ module Cabinet
         File.add file
         ::File.exists?(file).must_be :==, true
       end
+      it "adds them to the list of managed files" do
+        File.add file
+        File.managed.must_include file
+      end
     end
   end
 end
