@@ -14,7 +14,7 @@ module Cabinet
       end
       it "adds them to the list of managed files" do
         File.add file
-        File.managed.must_include file
+        Secretary.known_files.must_include file
       end
     end
   end
