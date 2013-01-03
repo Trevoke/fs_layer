@@ -4,7 +4,7 @@ module Cabinet
   class File
     def self.add file
       FileUtils.touch file 
-      Secretary.organize file
+      Index.organize file
     end
 
     def self.retrieve filename

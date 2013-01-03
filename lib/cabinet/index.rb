@@ -1,5 +1,5 @@
 module Cabinet
-  class Secretary
+  class Index
     def self.known_files
       @known_files ||= []
     end
