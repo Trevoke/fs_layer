@@ -1,5 +1,5 @@
 require_relative "../lib/cabinet.rb"
-require 'minitest/autorun'
+require 'spec_helper'
 
 module Cabinet
   describe File do
@@ -8,14 +8,14 @@ module Cabinet
 
     it "can be added" do
       File.add file
-      ::File.exists?(file).must_equal true
+      ::File.exists?(file).should eq true
     end
 
     describe "info" do
       before { File.add file }
       subject { File.retrieve file }
       it "has the name" do
-        subject.name.must_equal file
+        subject.name.should eq file
       end
     end
   end

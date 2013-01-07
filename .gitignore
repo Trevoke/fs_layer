@@ -17,3 +17,4 @@ test/version_tmp
 tmp
 tags
 *.sw[op]
+.idea/
