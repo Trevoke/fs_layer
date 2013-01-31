@@ -22,5 +22,14 @@ module Cabinet
     def exist?
       ::File.exists? @file
     end
+
+    def symlink?
+      ::File.symlink? @file
+    end
+
+    def self.symlink orig, dest
+      ::File.symlink ::File.expand_path(orig), ::File.expand_path(dest)
+    end
+
   end
 end

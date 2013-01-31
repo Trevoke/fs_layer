@@ -4,31 +4,45 @@ require 'spec_helper'
 module Cabinet
   describe File do
     let(:file) { "filename" }
-    after { FileUtils.rm_f file }
 
-    it "can be added" do
-      File.add file
-      ::File.exists?(file).should be_true
-    end
+    context "that exists" do
+      before { File.add file }
+      after { FileUtils.rm_f file }
 
-    it "can be a fake" do
-      File.add file, fake: true
-      ::File.exists?(file).should be_false
-      File.retrieve(file).should be_instance_of Cabinet::File
-    end
-
-    describe "info" do
-      context "for a file that exists" do
-        before { File.add file }
+      context "has relevant information" do
         subject { File.retrieve file }
         its(:name) { should eq file }
         its(:exist?) { should be_true }
+        its(:symlink?) { should be_false }
       end
-      context "for a file that does not exist" do
+
+      context "symlinking" do
+        before { File.symlink file, "#{file}2" }
+        after { FileUtils.rm_f "#{file}2" }
+        subject { File.new file }
+        its(:symlink?) { should be_false }
+      end
+    end
+
+    context "that does not exist" do
+      before { File.add file, fake: true }
+
+      context "has relevant information" do
         subject { File.retrieve file }
         its(:name) { should eq file}
         its(:exist?) { should be_false }
       end
+
+      context "symlinking" do
+        before { File.symlink file, "#{file}2" }
+        after { FileUtils.rm_f "#{file}2" }
+        subject { File.new "#{file}2" }
+        its(:symlink?) { should be_true }
+        it "is not a real node either" do
+          File.retrieve("#{file}2").should_not exist
+        end
+      end
+
     end
   end
 end
