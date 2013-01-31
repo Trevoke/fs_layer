@@ -8,14 +8,26 @@ module Cabinet
 
     it "can be added" do
       File.add file
-      ::File.exists?(file).should eq true
+      ::File.exists?(file).should be_true
+    end
+
+    it "can be a fake" do
+      File.add file, fake: true
+      ::File.exists?(file).should be_false
+      File.retrieve(file).should be_instance_of Cabinet::File
     end
 
     describe "info" do
-      before { File.add file }
-      subject { File.retrieve file }
-      it "has the name" do
-        subject.name.should eq file
+      context "for a file that exists" do
+        before { File.add file }
+        subject { File.retrieve file }
+        its(:name) { should eq file }
+        its(:exist?) { should be_true }
+      end
+      context "for a file that does not exist" do
+        subject { File.retrieve file }
+        its(:name) { should eq file}
+        its(:exist?) { should be_false }
       end
     end
   end

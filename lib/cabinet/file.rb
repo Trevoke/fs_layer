@@ -2,8 +2,8 @@ require 'fileutils'
 
 module Cabinet
   class File
-    def self.add file
-      FileUtils.touch file 
+    def self.add file, options={}
+      FileUtils.touch file unless options[:fake]
       Index.organize file
     end
 
@@ -17,6 +17,10 @@ module Cabinet
 
     def name
       @file
+    end
+
+    def exist?
+      ::File.exists? @file
     end
   end
 end
