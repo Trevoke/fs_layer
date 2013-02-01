@@ -17,10 +17,10 @@ module Cabinet
       end
 
       context "symlinking" do
-        before { File.symlink file, "#{file}2" }
+        before { File.new(file).symlink_to "#{file}2" }
         after { FileUtils.rm_f "#{file}2" }
-        subject { File.new file }
-        its(:symlink?) { should be_false }
+        subject { File.retrieve "#{file}2" }
+        its(:symlink?) { should be_true }
       end
     end
 
@@ -34,7 +34,7 @@ module Cabinet
       end
 
       context "symlinking" do
-        before { File.symlink file, "#{file}2" }
+        before { File.new(file).symlink_to "#{file}2" }
         after { FileUtils.rm_f "#{file}2" }
         subject { File.new "#{file}2" }
         its(:symlink?) { should be_true }

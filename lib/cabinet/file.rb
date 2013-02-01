@@ -23,12 +23,14 @@ module Cabinet
       ::File.exists? @file
     end
 
-    def symlink?
-      ::File.symlink? @file
+    def symlink_to destination
+      orig = ::File.expand_path @file
+      dest = ::File.expand_path destination
+      ::File.symlink orig, dest
     end
 
-    def self.symlink orig, dest
-      ::File.symlink ::File.expand_path(orig), ::File.expand_path(dest)
+    def symlink?
+      ::File.symlink? @file
     end
 
   end
