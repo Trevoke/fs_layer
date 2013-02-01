@@ -25,12 +25,16 @@ module Cabinet
 
     def symlink_to destination
       orig = ::File.expand_path @file
-      dest = ::File.expand_path destination
-      ::File.symlink orig, dest
+      @symlink = ::File.expand_path destination
+      ::File.symlink orig, @symlink
     end
 
     def symlink?
       ::File.symlink? @file
+    end
+
+    def destination
+      Pathname.new(@file).realpath.to_s
     end
 
   end

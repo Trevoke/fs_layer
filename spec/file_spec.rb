@@ -21,6 +21,7 @@ module Cabinet
         after { FileUtils.rm_f "#{file}2" }
         subject { File.retrieve "#{file}2" }
         its(:symlink?) { should be_true }
+        its(:destination) { should eq ::File.expand_path(file) }
       end
     end
 
