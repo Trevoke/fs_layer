@@ -18,7 +18,14 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+    Cabinet.retrieve file
+    Cabinet.insert file
+    Cabinet.delete file
+    Cabinet.config do |c|
+      c.fake = true
+      c.log = true
+      c.logger = Logger.new
+    end
 
 ## Contributing
 
@@ -30,7 +37,7 @@ TODO: Write usage instructions here
 
 ### possible vocabulary
 
-* manila file / folder
+* file / folder
 * hanging file
 * shredder
 * recycle bin
