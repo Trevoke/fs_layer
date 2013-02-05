@@ -2,9 +2,10 @@ require 'fileutils'
 
 module Cabinet
   class File
-    def self.add file, options={}
-      FileUtils.touch file unless options[:fake]
+    def self.add file
+      FileUtils.touch file unless Cabinet.fake
       Index.organize file
+      new file
     end
 
     def self.retrieve filename

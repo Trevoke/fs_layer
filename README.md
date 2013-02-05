@@ -26,6 +26,7 @@ Or install it yourself as:
       c.log = true
       c.logger = Logger.new
     end
+    Cabinet.link('file').to('symlink_destination')
 
 ## Contributing
 

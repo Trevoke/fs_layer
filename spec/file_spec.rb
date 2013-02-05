@@ -26,7 +26,13 @@ module Cabinet
     end
 
     context "that does not exist" do
-      before { File.add file, fake: true }
+      before do
+        Cabinet.fake_it
+        File.add file 
+      end
+      after do
+        Cabinet.keep_it_real
+      end
 
       context "has relevant information" do
         subject { File.retrieve file }
