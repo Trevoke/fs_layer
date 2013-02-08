@@ -1,7 +1,7 @@
-require_relative '../lib/cabinet.rb'
+require_relative '../lib/fs_layer.rb'
 require 'spec_helper'
 
-module Cabinet
+module FSLayer
   describe Index do
     let(:file) { 'some_file_name' }
     after { FileUtils.rm_f file }

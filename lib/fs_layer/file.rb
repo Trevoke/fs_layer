@@ -1,9 +1,9 @@
 require 'fileutils'
 
-module Cabinet
+module FSLayer
   class File
     def self.add file
-      FileUtils.touch file unless Cabinet.fake?
+      FileUtils.touch file unless FSLayer.fake?
       Index.organize file
       new file
     end

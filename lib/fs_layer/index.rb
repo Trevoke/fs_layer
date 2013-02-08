@@ -1,4 +1,4 @@
-module Cabinet
+module FSLayer
   class Index
     def self.known_files
       @known_files ||= []

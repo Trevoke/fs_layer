@@ -1,11 +1,11 @@
 # -*- encoding: utf-8 -*-
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'cabinet/version'
+require 'fs_layer/version'
 
 Gem::Specification.new do |gem|
-  gem.name          = "cabinet"
-  gem.version       = Cabinet::VERSION
+  gem.name          = "fs_layer"
+  gem.version       = FSLayer::VERSION
   gem.authors       = ["Aldric Giacomoni"]
   gem.email         = ["trevoke@gmail.com"]
   gem.description   = %q{Friendly file/directory interface. Secretary not included.}

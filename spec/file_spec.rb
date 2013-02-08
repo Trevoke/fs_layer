@@ -1,7 +1,7 @@
-require_relative "../lib/cabinet.rb"
+require_relative "../lib/fs_layer.rb"
 require 'spec_helper'
 
-module Cabinet
+module FSLayer
   describe File do
     let(:file) { "filename" }
 
@@ -20,11 +20,11 @@ module Cabinet
 
     context "that does not exist" do
       before do
-        Cabinet.fake_it
+        FSLayer.fake_it
         File.add file 
       end
       after do
-        Cabinet.keep_it_real
+        FSLayer.keep_it_real
       end
 
       context "has relevant information" do

@@ -1,4 +1,4 @@
-module Cabinet
+module FSLayer
   class << self
 
     def fake_it
@@ -14,7 +14,7 @@ module Cabinet
     end
 
     def insert file
-      Cabinet::File.add file
+      FSLayer::File.add file
     end
 
     def has? file_object
@@ -22,7 +22,7 @@ module Cabinet
     end
 
     def link file
-      Cabinet::Link.new(Cabinet::File.add(file))
+      FSLayer::Link.new(FSLayer::File.add(file))
     end
   end
 end

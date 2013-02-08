@@ -1,4 +1,4 @@
-# Cabinet
+# FSLayer
 
 TODO: Write a gem description
 
@@ -6,7 +6,7 @@ TODO: Write a gem description
 
 Add this line to your application's Gemfile:
 
-    gem 'cabinet'
+    gem 'fs_layer'
 
 And then execute:
 
@@ -14,19 +14,19 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install cabinet
+    $ gem install fs_layer
 
 ## Usage
 
-    Cabinet.retrieve file
-    Cabinet.insert file
-    Cabinet.delete file
-    Cabinet.config do |c|
+    FSLayer.retrieve file
+    FSLayer.insert file
+    FSLayer.delete file
+    FSLayer.config do |c|
       c.fake = true
       c.log = true
       c.logger = Logger.new
     end
-    Cabinet.link('file').to('symlink_destination')
+    FSLayer.link('file').to('symlink_destination')
 
 ## Contributing
 
