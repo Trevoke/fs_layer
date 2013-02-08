@@ -16,13 +16,6 @@ module Cabinet
         its(:symlink?) { should be_false }
       end
 
-      context "symlinking" do
-        before { File.new(file).symlink_to "#{file}2" }
-        after { FileUtils.rm_f "#{file}2" }
-        subject { File.retrieve "#{file}2" }
-        its(:symlink?) { should be_true }
-        its(:destination) { should eq ::File.expand_path(file) }
-      end
     end
 
     context "that does not exist" do
@@ -39,17 +32,6 @@ module Cabinet
         its(:name) { should eq file}
         its(:exist?) { should be_false }
       end
-
-      context "symlinking" do
-        before { File.new(file).symlink_to "#{file}2" }
-        after { FileUtils.rm_f "#{file}2" }
-        subject { File.new "#{file}2" }
-        its(:symlink?) { should be_true }
-        it "is not a real node either" do
-          File.retrieve("#{file}2").should_not exist
-        end
-      end
-
     end
   end
 end

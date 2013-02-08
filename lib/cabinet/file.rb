@@ -24,12 +24,6 @@ module Cabinet
       ::File.exists? @file
     end
 
-    def symlink_to destination
-      orig = ::File.expand_path @file
-      @symlink = ::File.expand_path destination
-      ::File.symlink orig, @symlink
-    end
-
     def symlink?
       ::File.symlink? @file
     end
