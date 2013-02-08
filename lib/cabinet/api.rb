@@ -1,6 +1,5 @@
 module Cabinet
   class << self
-    attr_reader :fake
 
     def fake_it
       @fake = true
@@ -10,6 +9,10 @@ module Cabinet
       @fake = false
     end
 
+    def fake?
+      @fake
+    end
+
     def insert file
       Cabinet::File.add file
     end
@@ -17,5 +20,10 @@ module Cabinet
     def has? file_object
       Index.known_files.include? file_object 
     end
+
+    def link file
+      Cabinet::Link.new(Cabinet::File.add(file))
+    end
   end
 end
+

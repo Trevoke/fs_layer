@@ -20,5 +20,13 @@ describe Cabinet do
       subject.has?('/tmp/file').should be_true
       file.should_not exist
     end
+
+    it "does not really create symlinks" do
+      subject.insert '/tmp/file1'
+      file = subject.link('/tmp/file1').to('/tmp/file2')
+      file.should be_an_instance_of Cabinet::File
+      file.path.should eq '/tmp/file2'
+      ::File.exist?(file.path).should be_false
+    end
   end
 end

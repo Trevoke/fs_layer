@@ -3,7 +3,7 @@ require 'fileutils'
 module Cabinet
   class File
     def self.add file
-      FileUtils.touch file unless Cabinet.fake
+      FileUtils.touch file unless Cabinet.fake?
       Index.organize file
       new file
     end
@@ -17,7 +17,7 @@ module Cabinet
     end
 
     def name
-      @file
+      ::File.basename @file
     end
 
     def exist?
@@ -38,5 +38,8 @@ module Cabinet
       Pathname.new(@file).realpath.to_s
     end
 
+    def path
+      @file
+    end
   end
 end
