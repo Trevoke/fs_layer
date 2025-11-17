@@ -5,6 +5,9 @@ module FSLayer
   describe File do
     let(:file) { "filename" }
 
+    before { Index.clear }
+    after { Index.clear }
+
     context "that exists" do
       before { File.add file }
       after { FileUtils.rm_f file }
@@ -12,8 +15,8 @@ module FSLayer
       context "has relevant information" do
         subject { File.retrieve file }
         its(:name) { should eq file }
-        its(:exist?) { should be_true }
-        its(:symlink?) { should be_false }
+        its(:exist?) { should be true }
+        its(:symlink?) { should be false }
       end
 
     end
@@ -30,7 +33,7 @@ module FSLayer
       context "has relevant information" do
         subject { File.retrieve file }
         its(:name) { should eq file}
-        its(:exist?) { should be_false }
+        its(:exist?) { should be false }
       end
     end
   end
