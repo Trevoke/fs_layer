@@ -1,30 +1,23 @@
-require 'fileutils'
-require 'pathname'
-
 module FSLayer
   class File
-    def self.add file
+    attr_reader :path, :backend
+
+    def self.add(file, content = '')
       validate_path!(file)
 
       begin
-        FileUtils.touch file unless FSLayer.fake?
-      rescue Errno::EACCES => e
-        FSLayer.log(:error, "Permission denied creating file: #{file}")
-        raise PermissionError, "Permission denied: #{file}"
-      rescue Errno::ENOENT => e
-        FSLayer.log(:error, "Invalid path or missing parent directory: #{file}")
-        raise InvalidPathError, "Invalid path or parent directory doesn't exist: #{file}"
-      rescue StandardError => e
+        FSLayer.backend.write(file, content)
+      rescue => e
         FSLayer.log(:error, "Failed to create file #{file}: #{e.message}")
-        raise Error, "Failed to create file #{file}: #{e.message}"
+        raise
       end
 
-      Index.organize file
-      new file
+      Index.organize(file)
+      new(file)
     end
 
-    def self.retrieve filename
-      new filename
+    def self.retrieve(filename)
+      new(filename)
     end
 
     def self.validate_path!(path)
@@ -33,38 +26,68 @@ module FSLayer
       raise InvalidPathError, "Path contains null bytes" if path.to_s.include?("\0")
     end
 
-    def initialize file
+    def initialize(file, backend = nil)
       self.class.validate_path!(file)
-      @file = file
+      @path = file
+      @backend = backend || FSLayer.backend
     end
 
     def name
-      ::File.basename @file
+      ::File.basename(@path)
+    end
+
+    def read
+      backend.read(@path)
+    end
+
+    def write(content, **options)
+      backend.write(@path, content, **options)
     end
 
     def exist?
-      ::File.exist? @file
+      backend.exists?(@path)
     end
 
     def symlink?
-      ::File.symlink? @file
+      return false unless backend.supports_symlinks?
+      backend.symlink?(@path)
     end
 
     def destination
-      raise FileNotFoundError, "File does not exist: #{@file}" unless exist?
-      raise SymlinkError, "File is not a symlink: #{@file}" unless symlink?
+      raise FileNotFoundError, "File does not exist: #{@path}" unless exist?
+      raise SymlinkError, "File is not a symlink: #{@path}" unless symlink?
 
-      begin
-        Pathname.new(@file).realpath.to_s
-      rescue Errno::ENOENT
-        raise SymlinkError, "Broken symlink: #{@file}"
-      rescue Errno::ELOOP
-        raise SymlinkError, "Circular symlink detected: #{@file}"
-      end
+      backend.readlink(@path)
     end
 
-    def path
-      @file
+    def metadata
+      backend.metadata(@path)
+    end
+
+    def size
+      metadata[:size]
+    end
+
+    def modified_at
+      metadata[:modified_at]
+    end
+
+    def delete
+      FSLayer.delete(self)
+    end
+
+    def uri
+      backend.uri_for(@path)
+    end
+
+    # Stream reading
+    def open_read(**options, &block)
+      backend.open_read(@path, **options, &block)
+    end
+
+    # Stream writing
+    def open_write(**options, &block)
+      backend.open_write(@path, **options, &block)
     end
   end
 end
